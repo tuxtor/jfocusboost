@@ -1,0 +1,102 @@
+/* JFocusBoost is an open-source clone of Focus Booster
+ * Copyright (C) 2012 Víctor Orozco
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.background {
+    /*-fx-background-image: url("navy_blue.png");
+    -fx-background-repeat: repeat;*/
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-color: linear-gradient(#020b02, #3a3a3a);
+}
+
+.glass-panel{
+    -fx-background-color: linear-gradient(#020b02, #3a3a3a);
+    -fx-border-color: rgba(0,0,0,0.5);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+}
+
+.progress-bar {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ProgressBarSkin";
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, derive(-fx-color,30%) 5%, derive(-fx-color,-17%));
+    -fx-background-insets: 0, 1;
+    -fx-indeterminate-bar-length: 60;
+    -fx-indeterminate-bar-escape: true;
+    -fx-indeterminate-bar-flip: true;
+    -fx-indeterminate-bar-animation-time: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.progress-bar:hover{
+    -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );
+}
+
+.progress-bar .bar {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(#606c88 0%,#3f4c6b 100%);
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.416667em; /* 5 */
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.progress-bar:indeterminate .bar {
+    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+}
+
+.progress-bar .track {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, derive(-fx-color,-15%), derive(-fx-color,2.2%) 20%, derive(-fx-color,60%));
+    -fx-background-insets:  0, 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.progress-bar:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+#close-btn {
+    -fx-background-image: url("close.png");
+}
+#reload-btn {
+    -fx-background-image: url("reset.png");
+}
+#conf-btn {
+    -fx-background-image: url("cogs.png");
+}
+
+#pin-btn {
+    -fx-background-image: url("pin.png");
+}
+
+#close-btn, #pin-btn, #reload-btn, #conf-btn {
+    -fx-font-size: 1px;
+    -fx-background-color: null;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 6;
+}
+
+#close-btn:hover, #pin-btn:hover, #reload-btn:hover, #conf-btn:hover {
+    -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );
+}
