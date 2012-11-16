@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package shekalug;
+package org.shekalug;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

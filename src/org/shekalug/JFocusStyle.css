@@ -49,15 +49,7 @@
     -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );
 }
 
-.progress-bar .bar {
-    -fx-background-color:
-        -fx-box-border,
-        linear-gradient(#606c88 0%,#3f4c6b 100%);
-    -fx-background-insets: 0, 1, 2;
-    -fx-padding: 0.416667em; /* 5 */
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-}
+
 
 .progress-bar:indeterminate .bar {
     -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
@@ -70,24 +62,54 @@
     -fx-background-insets:  0, 1;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
+    -fx-border-color: rgba(0,0,0,0.5);
 }
 
 .progress-bar:disabled {
     -fx-opacity: -fx-disabled-opacity;
 }
 
+.progress-bar .bar {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(#606c88,#3f4c6b);
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.416667em; /* 5 */
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-image: url("images/play.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+}
+
+#timerBarStop .bar {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(#a4b357,#75890c);
+    -fx-background-image: url("images/pause.png");
+
+}
+
+#timerBarBack .bar {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(#f16f5c,#cf0404);
+    -fx-background-image: url("images/prev.png");
+
+}
+
 #close-btn {
-    -fx-background-image: url("close.png");
+    -fx-background-image: url("images/close.png");
 }
 #reload-btn {
-    -fx-background-image: url("reset.png");
+    -fx-background-image: url("images/reset.png");
 }
 #conf-btn {
-    -fx-background-image: url("cogs.png");
+    -fx-background-image: url("images/cogs.png");
 }
 
 #pin-btn {
-    -fx-background-image: url("pin.png");
+    -fx-background-image: url("images/pin.png");
 }
 
 #close-btn, #pin-btn, #reload-btn, #conf-btn {

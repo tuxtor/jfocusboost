@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shekalug;
+package org.shekalug;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -47,13 +47,6 @@ public class ButtonsBox extends VBox {
                 toogleAllwaysOnTop();
             }
         });
-        Button reloadBtn = new Button();
-        reloadBtn.setId("reload-btn");
-        reloadBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-            }
-        });
         Button confBtn = new Button();
         confBtn.setId("conf-btn");
         confBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -61,7 +54,7 @@ public class ButtonsBox extends VBox {
             public void handle(ActionEvent actionEvent) {
             }
         });
-        getChildren().addAll(closeBtn, pinBtn, reloadBtn, confBtn);
+        getChildren().addAll(closeBtn, pinBtn, confBtn);
     }
 
     public void toogleAllwaysOnTop() {

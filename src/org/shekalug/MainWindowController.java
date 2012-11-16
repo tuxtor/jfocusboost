@@ -14,10 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package shekalug;
+package org.shekalug;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.StringProperty;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,6 +37,12 @@ import javafx.stage.Stage;
  */
 public class MainWindowController implements Initializable {
 
+    private int pomodoroCount;
+    private int breakCount;
+    private long pomodoroDuration;
+    private long shortBreakDuration;
+    private long longBreakDuration;
+    private int timerBarStatus; //0-Inactive, 1-Paused, 2-Restarting
     @FXML //  fx:id="sessionLabel"
     private Label sessionLabel; // Value injected by FXMLLoader
     @FXML //  fx:id="timeLabel"
@@ -50,21 +58,73 @@ public class MainWindowController implements Initializable {
     private double mouseDragOffsetX = 0;
     private double mouseDragOffsetY = 0;
     private Stage containerStage;
+    private TimerService timerService;
+    
+    private EventHandler<WorkerStateEvent> timerEventHandler = new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(WorkerStateEvent t) {
+            initializePomoBar();
+        }
+    };
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        assert sessionLabel != null : "fx:id=\"sessionLabel\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert timeLabel != null : "fx:id=\"timeLabel\" was not injected: check your FXML file 'MainWindow.fxml'.";
-        assert timerBar != null : "fx:id=\"timerBar\" was not injected: check your FXML file 'MainWindow.fxml'.";
-
         initializePaneDraging();
-        timerBar.setProgress(0.1);
-
+        pomodoroDuration = 15000;
+        shortBreakDuration = 10000;
+        longBreakDuration = 5000;
+        initializePomoBar();
+        
     }
 
     // Handler for ProgressBar[fx:id="timerBar"] onMouseClicked
     public void barClickHandle(MouseEvent event) {
-        System.out.println("bar click");
+        switch (timerBarStatus) {
+            case 0:
+                timerService.start();
+                if (pomodoroCount > breakCount) {
+                    sessionLabel.setText("Pomodoro " + pomodoroCount);
+                } else {
+                    sessionLabel.setText("Break " + breakCount);
+                }
+                timerBarStatus = 1;
+                timerBar.setId("timerBarStop");
+                break;
+            case 1:
+                timerService.cancel();
+                timerBarStatus = 2;
+                timerBar.setId("timerBarBack");
+                break;
+            case 2://force break jump
+                if (pomodoroCount > breakCount) {
+                    breakCount++;
+                }
+                initializePomoBar();
+                break;
+            default:
+                //do nothing
+                break;
+        }
+    }
+
+    /**
+     * Stabilishes the apropiate duration based on pomodoroDuration and
+     * restDuration
+     *
+     * @return status duration in milliseconds
+     */
+    public long getDuration() {
+        if (pomodoroCount == breakCount) {//Is pomodoro
+            pomodoroCount++;
+            return pomodoroDuration;
+        } else {//Is break
+            breakCount++;
+            if (((breakCount) % 4) == 0) {//Long break
+                return longBreakDuration;
+            } else {//short break
+                return shortBreakDuration;
+            }
+        }
     }
 
     public void setContainerStage(Stage containerStage) {
@@ -73,7 +133,7 @@ public class MainWindowController implements Initializable {
         anchorPane.getChildren().add(controlBox);
         anchorPane.setTopAnchor(controlBox, 5.0);
         anchorPane.setRightAnchor(controlBox, 0.0);
-        
+
     }
 
     public void initializePaneDraging() {
@@ -98,6 +158,12 @@ public class MainWindowController implements Initializable {
         anchorPane.setOnMouseDragged(generalMouseDragged);
         clockPane.setOnMousePressed(generalMousePressed);
         clockPane.setOnMouseDragged(generalMouseDragged);
+    }
 
+    
+    public void initializePomoBar() {
+        timerBarStatus = 0;
+        timerBar.setId("timerBar");
+        timerService = new TimerService(getDuration(), timerBar, timeLabel, timerEventHandler);
     }
 }
