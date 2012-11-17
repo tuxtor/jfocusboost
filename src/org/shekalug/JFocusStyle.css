@@ -85,6 +85,7 @@
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-background-image: url("images/play.png");
+    -fx-background-size: 32,32;
     -fx-background-repeat: no-repeat;
     -fx-background-position: right center;
 }
@@ -97,7 +98,7 @@
     -fx-background-color:
         -fx-box-border,
         linear-gradient(#a4b357,#75890c);
-    -fx-background-image: url("images/pause.png");
+    -fx-background-image: url("images/stop.png");
 }
 
 #timerBarBack{
@@ -123,14 +124,17 @@
     -fx-background-image: url("images/pin.png");
 }
 
-#close-btn, #pin-btn, #conf-btn {
+#min-btn {
+    -fx-background-image: url("images/minimize.png");
+}
+#close-btn, #pin-btn, #conf-btn, #min-btn {
     -fx-font-size: 1px;
     -fx-background-color: null;
     -fx-background-repeat: no-repeat;
-    -fx-padding: 9;
-    -fx-background-size: 18, 18;
+    -fx-padding: 8;
+    -fx-background-size: 14, 14;
 }
 
-#close-btn:hover, #pin-btn:hover, #conf-btn:hover {
+#close-btn:hover, #pin-btn:hover, #conf-btn:hover, #min-btn:hover {
     -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 10, 0.7 , 0 , 0 );
 }

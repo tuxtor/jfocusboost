@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class ButtonsBox extends VBox {
 
     private Stage stage;
-    
+
     public ButtonsBox(final Stage stage) {
         super(4);
         this.stage = stage;
@@ -36,7 +36,8 @@ public class ButtonsBox extends VBox {
         closeBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Platform.exit();
+                SystemTray.exit();
+                System.exit(0);
             }
         });
         Button pinBtn = new Button();
@@ -54,10 +55,17 @@ public class ButtonsBox extends VBox {
             public void handle(ActionEvent actionEvent) {
             }
         });
-        getChildren().addAll(closeBtn, pinBtn, confBtn);
+        Button minBtn = new Button();
+        minBtn.setId("min-btn");
+        minBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+               SystemTray.minimizeToSystemTray();
+            }
+        });
+        getChildren().addAll(closeBtn, pinBtn, confBtn, minBtn);
     }
 
     public void toogleAllwaysOnTop() {
-        
     }
 }

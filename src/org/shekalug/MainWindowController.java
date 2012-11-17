@@ -18,14 +18,11 @@ package org.shekalug;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -70,6 +67,7 @@ public class MainWindowController implements Initializable {
         @Override
         public void handle(WorkerStateEvent t) {
             alarmClip.play();
+            SystemTray.restoreFromSystemTray();
             initializePomoBar();
         }
     };
@@ -77,9 +75,9 @@ public class MainWindowController implements Initializable {
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializePaneDraging();
-        pomodoroDuration = 15000;
-        shortBreakDuration = 10000;
-        longBreakDuration = 5000;
+        pomodoroDuration = 25*60*1000;
+        shortBreakDuration = 5*60*1000;
+        longBreakDuration = 15*60*1000;
 
         alarmClip = new AudioClip(MainWindowController.class.getResource("sounds/clockalarm.wav").toString());
         tickingClip = new AudioClip(MainWindowController.class.getResource("sounds/clockticking.wav").toString());
