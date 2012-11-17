@@ -18,22 +18,23 @@ import javafx.stage.StageStyle;
  */
 public class JFocusBoost extends Application {
 
-
     @Override
     public void start(final Stage stage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(JFocusBoost.class.getResource("MainWindow.fxml"));
-        Parent root = (Parent) fxmlLoader.load(getClass().getResource("MainWindow.fxml").openStream());
+        fxmlLoader.setLocation(JFocusBoost.class.getResource("MainWindowCompact.fxml"));
+        Parent root = (Parent) fxmlLoader.load(getClass().getResource("MainWindowCompact.fxml").openStream());
+//        fxmlLoader.setLocation(JFocusBoost.class.getResource("MainWindow.fxml"));
+//        Parent root = (Parent) fxmlLoader.load(getClass().getResource("MainWindow.fxml").openStream());
         MainWindowController mainWindowController = (MainWindowController) fxmlLoader.getController();
         mainWindowController.setContainerStage(stage);
         //Set transparency
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setResizable(false);
-        
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
+        //Binding scene
         stage.setScene(scene);
         stage.setTitle("JFocusBoost");
         stage.show();

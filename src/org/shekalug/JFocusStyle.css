@@ -30,8 +30,17 @@
     -fx-background-radius: 10;
 
 }
+.progress-indicator {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ProgressIndicatorSkin";
+    -fx-progress-color: #606c88;
+}
 
-.progress-bar {
+.progress-indicator .percentage {
+    -fx-fill: white;
+}
+
+
+.progress-bar{
     -fx-skin: "com.sun.javafx.scene.control.skin.ProgressBarSkin";
     -fx-background-color:
         -fx-box-border,
@@ -45,11 +54,9 @@
     -fx-background-radius: 10;
 }
 
-.progress-bar:hover{
+.progress-bar .progress-indicator:hover{
     -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );
 }
-
-
 
 .progress-bar:indeterminate .bar {
     -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
@@ -65,7 +72,7 @@
     -fx-border-color: rgba(0,0,0,0.5);
 }
 
-.progress-bar:disabled {
+.progress-bar .progress-indicator:disabled {
     -fx-opacity: -fx-disabled-opacity;
 }
 
@@ -82,43 +89,48 @@
     -fx-background-position: right center;
 }
 
+#timerBarStop{
+    -fx-progress-color: #a4b357;
+}
+
 #timerBarStop .bar {
     -fx-background-color:
         -fx-box-border,
         linear-gradient(#a4b357,#75890c);
     -fx-background-image: url("images/pause.png");
+}
 
+#timerBarBack{
+    -fx-progress-color: #cf0404;
 }
 
 #timerBarBack .bar {
     -fx-background-color:
         -fx-box-border,
-        linear-gradient(#f16f5c,#cf0404);
+        linear-gradient(#cf0404,#FF0000);
     -fx-background-image: url("images/prev.png");
-
 }
 
 #close-btn {
-    -fx-background-image: url("images/close.png");
+    -fx-background-image: url("images/button-power.png");
 }
-#reload-btn {
-    -fx-background-image: url("images/reset.png");
-}
+
 #conf-btn {
-    -fx-background-image: url("images/cogs.png");
+    -fx-background-image: url("images/wrench.png");
 }
 
 #pin-btn {
     -fx-background-image: url("images/pin.png");
 }
 
-#close-btn, #pin-btn, #reload-btn, #conf-btn {
+#close-btn, #pin-btn, #conf-btn {
     -fx-font-size: 1px;
     -fx-background-color: null;
     -fx-background-repeat: no-repeat;
-    -fx-padding: 6;
+    -fx-padding: 9;
+    -fx-background-size: 18, 18;
 }
 
-#close-btn:hover, #pin-btn:hover, #reload-btn:hover, #conf-btn:hover {
-    -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 5, 0.7 , 0 , 0 );
+#close-btn:hover, #pin-btn:hover, #conf-btn:hover {
+    -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 10, 0.7 , 0 , 0 );
 }

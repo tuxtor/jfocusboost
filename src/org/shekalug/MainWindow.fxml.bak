@@ -35,8 +35,8 @@
         </Lighting>
       </effect>
     </Pane>
-    <ProgressBar fx:id="timerBar" onMouseClicked="#barClickHandle" prefHeight="70.0" prefWidth="485.0" progress="0.1" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
-    <VBox fx:id="controlBox" prefHeight="100.0" prefWidth="18.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
+    <ProgressBar fx:id="timerBar" onMouseClicked="#barClickHandle" prefHeight="70.0" prefWidth="489.0" progress="0.1" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="15.0" />
+    <VBox fx:id="controlBox" prefHeight="100.0" prefWidth="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
   </children>
   <stylesheets>
     <URL value="@JFocusStyle.css" />

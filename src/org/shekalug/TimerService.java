@@ -15,6 +15,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  *
@@ -23,40 +24,43 @@ import javafx.scene.control.ProgressBar;
 public class TimerService extends Service<String> {
 
     private long timerDuration;//In miliseconds
-    private ProgressBar timerBar;
+    private ProgressIndicator timerBar;
     private Label timeLabel;
-    private long actualDuration;
     private int i;
+    private boolean isPomodoro;
     private Task timerTask = new Task<String>() {
         @Override
-        protected String call() {
-            try {
+        protected String call() throws InterruptedException{
                 for (i = 0; i < timerDuration; i += 1000) {
                     Thread.sleep(1000);//Update every second
-                    actualDuration = timerDuration - i;
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            timeLabel.setText(TimeUtilities.getStringTime(actualDuration));
-                            double progress = 0.1+0.9*((double)i/(double)timerDuration);
+                            timeLabel.setText(TimeUtilities.getStringTime(timerDuration - i));
+                            double progress;
+                            if (isPomodoro) {
+                                progress = 0.1 + 0.9 * ((double) i / (double) timerDuration);
+                            }else{
+                                progress = 0.1 + 0.9 * ((double) (timerDuration - i) / (double) timerDuration);
+                            }
                             timerBar.setProgress(progress);
-                            System.out.println(progress+","+i+","+timerDuration);
                         }
                     });
                 }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
             return "";
         }
     };
 
-    public TimerService(long timerDuration, ProgressBar timerBar, Label timeLabel, EventHandler timerEventHandler) {
+    public TimerService(long timerDuration, boolean  isPomodoro, ProgressIndicator timerBar, Label timeLabel, EventHandler timerEventHandler) {
         this.timerDuration = timerDuration;
         this.timerBar = timerBar;
         this.timeLabel = timeLabel;
+        this.isPomodoro = isPomodoro;
         this.setOnSucceeded(timerEventHandler);
         this.timeLabel.setText("00:00");
+        if(isPomodoro){
+            this.timerBar.setProgress(0.1);
+        }
     }
 
     @Override
