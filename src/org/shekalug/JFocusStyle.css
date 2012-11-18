@@ -23,6 +23,12 @@
     -fx-background-color: linear-gradient(#020b02, #3a3a3a);
 }
 
+.graybackground {
+
+    -fx-background-color: linear-gradient(#D3D3CA, #BEBEB6);
+}
+
+
 .glass-panel{
     -fx-background-color: linear-gradient(#020b02, #3a3a3a);
     -fx-border-color: rgba(0,0,0,0.5);
@@ -90,6 +96,9 @@
     -fx-background-position: right center;
 }
 
+.whiteTextLabel{
+    -fx-text-fill: #2E2E2C;
+}
 #timerBarStop{
     -fx-progress-color: #a4b357;
 }
@@ -127,7 +136,12 @@
 #min-btn {
     -fx-background-image: url("images/minimize.png");
 }
-#close-btn, #pin-btn, #conf-btn, #min-btn {
+
+#app-btn {
+    -fx-background-image: url("images/app.png");
+}
+
+#close-btn, #pin-btn, #conf-btn, #min-btn, #app-btn {
     -fx-font-size: 1px;
     -fx-background-color: null;
     -fx-background-repeat: no-repeat;
@@ -135,6 +149,6 @@
     -fx-background-size: 14, 14;
 }
 
-#close-btn:hover, #pin-btn:hover, #conf-btn:hover, #min-btn:hover {
+#close-btn:hover, #pin-btn:hover, #conf-btn:hover, #min-btn:hover, #app-btn:hover {
     -fx-effect: dropshadow( three-pass-box , -fx-focus-color , 10, 0.7 , 0 , 0 );
 }

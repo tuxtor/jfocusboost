@@ -40,9 +40,6 @@ public class MainWindowController implements Initializable {
     //Basic control flags and properties
     private int pomodoroCount;
     private int breakCount;
-    private long pomodoroDuration;
-    private long shortBreakDuration;
-    private long longBreakDuration;
     private int timerBarStatus; //0-Inactive, 1-Paused, 2-Restarting
     private AudioClip alarmClip;
     private AudioClip tickingClip;
@@ -61,13 +58,13 @@ public class MainWindowController implements Initializable {
     //Gui dragging properties
     private double mouseDragOffsetX = 0;
     private double mouseDragOffsetY = 0;
-    private Stage containerStage;
+    public static Stage containerStage;
     private TimerService timerService;
     private EventHandler<WorkerStateEvent> timerEventHandler = new EventHandler<WorkerStateEvent>() {
         @Override
         public void handle(WorkerStateEvent t) {
             alarmClip.play();
-            SystemTray.restoreFromSystemTray();
+            containerStage.setIconified(false);
             initializePomoBar();
         }
     };
@@ -75,15 +72,15 @@ public class MainWindowController implements Initializable {
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializePaneDraging();
-        pomodoroDuration = 25*60*1000;
-        shortBreakDuration = 5*60*1000;
-        longBreakDuration = 15*60*1000;
 
         alarmClip = new AudioClip(MainWindowController.class.getResource("sounds/clockalarm.wav").toString());
         tickingClip = new AudioClip(MainWindowController.class.getResource("sounds/clockticking.wav").toString());
 
         initializePomoBar();
-
+        controlBox = new ButtonsBox(this.containerStage);
+        anchorPane.getChildren().add(controlBox);
+        anchorPane.setTopAnchor(controlBox, 5.0);
+        anchorPane.setRightAnchor(controlBox, 0.0);
     }
 
     // Handler for ProgressBar[fx:id="timerBar"] onMouseClicked
@@ -126,24 +123,15 @@ public class MainWindowController implements Initializable {
     public long getDuration() {
         if (pomodoroCount == breakCount) {//Is pomodoro
             pomodoroCount++;
-            return pomodoroDuration;
+            return TimeSettings.getPomodoroDuration();
         } else {//Is break
             breakCount++;
             if (((breakCount) % 4) == 0) {//Long break
-                return longBreakDuration;
+                return TimeSettings.getLongBreakDuration();
             } else {//short break
-                return shortBreakDuration;
+                return TimeSettings.getShortBreakDuration();
             }
         }
-    }
-
-    public void setContainerStage(Stage containerStage) {
-        this.containerStage = containerStage;
-        controlBox = new ButtonsBox(this.containerStage);
-        anchorPane.getChildren().add(controlBox);
-        anchorPane.setTopAnchor(controlBox, 5.0);
-        anchorPane.setRightAnchor(controlBox, 0.0);
-
     }
 
     public void initializePaneDraging() {

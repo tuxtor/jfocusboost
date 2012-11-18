@@ -16,12 +16,20 @@
  */
 package org.shekalug;
 
+import java.nio.channels.SeekableByteChannel;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ButtonsBox extends VBox {
 
@@ -36,16 +44,15 @@ public class ButtonsBox extends VBox {
         closeBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                SystemTray.exit();
                 System.exit(0);
             }
         });
-        Button pinBtn = new Button();
-        pinBtn.setId("pin-btn");
-        pinBtn.setOnAction(new EventHandler<ActionEvent>() {
+        Button appBtn = new Button();
+        appBtn.setId("app-btn");
+        appBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                toogleAllwaysOnTop();
+                toogleMode();
             }
         });
         Button confBtn = new Button();
@@ -53,6 +60,15 @@ public class ButtonsBox extends VBox {
         confBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try {
+                    //Binding scene
+                    stage.setScene(JFocusBoost.settingsScene);
+                    //stage.setTitle("JFocusBoost");
+                    //stage.show();
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         });
         Button minBtn = new Button();
@@ -60,12 +76,20 @@ public class ButtonsBox extends VBox {
         minBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-               SystemTray.minimizeToSystemTray();
+                stage.setIconified(true);
             }
         });
-        getChildren().addAll(closeBtn, pinBtn, confBtn, minBtn);
+        getChildren().addAll(closeBtn, appBtn, confBtn, minBtn);
     }
 
-    public void toogleAllwaysOnTop() {
+    public void toogleMode() {
+        if (JFocusBoost.smallVersion) {
+
+            stage.setScene(JFocusBoost.pomodoroLargeScene);
+
+        } else {
+            stage.setScene(JFocusBoost.pomodoroSmallScene);
+        }
+        JFocusBoost.smallVersion = !JFocusBoost.smallVersion;
     }
 }

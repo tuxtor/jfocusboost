@@ -16,6 +16,7 @@
  */
 package org.shekalug;
 
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,41 +32,39 @@ import javafx.stage.StageStyle;
  */
 public class JFocusBoost extends Application {
 
+    public static Scene settingsScene;
+    public static Scene pomodoroSmallScene;
+    public static Scene pomodoroLargeScene;
+    public static boolean smallVersion;
     @Override
     public void start(final Stage stage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(JFocusBoost.class.getResource("MainWindowCompact.fxml"));
-        Parent root = (Parent) fxmlLoader.load(getClass().getResource("MainWindowCompact.fxml").openStream());
-//        fxmlLoader.setLocation(JFocusBoost.class.getResource("MainWindow.fxml"));
-//        Parent root = (Parent) fxmlLoader.load(getClass().getResource("MainWindow.fxml").openStream());
-        MainWindowController mainWindowController = (MainWindowController) fxmlLoader.getController();
-        mainWindowController.setContainerStage(stage);
         //Set transparency
         stage.initStyle(StageStyle.TRANSPARENT);
+        MainWindowController.containerStage = stage;
         stage.setResizable(false);
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
+        smallVersion = true;
+        //Creating small version
+        Parent pomodoroSmallRoot = FXMLLoader.load(getClass().getResource("MainWindowCompact.fxml"));
+        //Creating large version
+        Parent pomodoroLargeRoot = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+
+        ResourceBundle language = ResourceBundle.getBundle("org.shekalug.locales.jfocusboost");
+        Parent settingsRoot = FXMLLoader.load(getClass().getResource("Settings.fxml"), language);
+
+        pomodoroSmallScene = new Scene(pomodoroSmallRoot);
+        pomodoroSmallScene.setFill(Color.TRANSPARENT);
+        pomodoroLargeScene = new Scene(pomodoroLargeRoot);
+        pomodoroLargeScene.setFill(Color.TRANSPARENT);
+        //-----
+        settingsScene = new Scene(settingsRoot);
+        settingsScene.setFill(Color.TRANSPARENT);
+        SettingsController.containerStage = stage;
         //Binding scene
-        stage.setScene(scene);
+        stage.setScene(pomodoroSmallScene);
         stage.setTitle("JFocusBoost");
         stage.show();
         //logo
         stage.getIcons().add(new Image(JFocusBoost.class.getResourceAsStream("images/logo.png")));
-        SystemTray.createSystemTray(stage);
-//        if (SystemTray.isSupported()) {
-//            SystemTray tray = SystemTray.getSystemTray();
-//            java.awt.Image image = Toolkit.getDefaultToolkit().getImage(JFocusBoost.class.getResource("images/icon.ico"));
-//            TrayIcon trayIcon = new TrayIcon(image, "JFocusBooster");
-//            try {
-//                tray.add(trayIcon);
-//            } catch (Exception e) {
-//                System.err.println("Can't add to tray");
-//            }
-//        } else {
-//            System.err.println("Tray unavailable");
-//        }
     }
 
     /**
