@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" disable="false" mouseTransparent="false" opacity="1.0" prefHeight="250.0" prefWidth="300.0" snapToPixel="true" styleClass="graybackground" visible="true" xmlns:fx="http://javafx.com/fxml" fx:controller="org.shekalug.SettingsController">
+<AnchorPane fx:id="anchorPane" disable="false" mouseTransparent="false" opacity="1.0" prefHeight="250.0" prefWidth="300.0" snapToPixel="true" styleClass="graybackground" visible="true" xmlns:fx="http://javafx.com/fxml" fx:controller="org.shekalug.controller.SettingsController">
   <children>
     <GridPane prefHeight="214.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>

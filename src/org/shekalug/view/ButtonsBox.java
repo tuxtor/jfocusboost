@@ -14,22 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.view;
 
-import java.nio.channels.SeekableByteChannel;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javafx.application.Platform;
+import org.shekalug.model.TimeSettings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class ButtonsBox extends VBox {
 
@@ -60,15 +52,7 @@ public class ButtonsBox extends VBox {
         confBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    //Binding scene
-                    stage.setScene(JFocusBoost.settingsScene);
-                    //stage.setTitle("JFocusBoost");
-                    //stage.show();
-
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
+                showSettings();
             }
         });
         Button minBtn = new Button();
@@ -83,13 +67,16 @@ public class ButtonsBox extends VBox {
     }
 
     public void toogleMode() {
-        if (JFocusBoost.smallVersion) {
+        stage.setScene(JFocusBoost.switchTimerScene());
+    }
 
-            stage.setScene(JFocusBoost.pomodoroLargeScene);
-
-        } else {
-            stage.setScene(JFocusBoost.pomodoroSmallScene);
+    public void showSettings() {
+        try {
+            //Binding scene
+            TimeSettings.setPrevXPosition(stage.getX());
+            TimeSettings.setPrevYPosition(stage.getY());
+            stage.setScene(JFocusBoost.settingsScene);
+        } catch (Exception e) {
         }
-        JFocusBoost.smallVersion = !JFocusBoost.smallVersion;
     }
 }

@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import org.shekalug.model.TimerModel;
+import org.shekalug.view.TimeUtilities;
 
 /**
  *
@@ -30,43 +30,39 @@ import javafx.scene.control.ProgressIndicator;
 public class TimerService extends Service<String> {
 
     private long timerDuration;//In miliseconds
-    private ProgressIndicator timerBar;
-    private Label timeLabel;
-    private int i;
     private boolean isPomodoro;
     private Task timerTask = new Task<String>() {
         @Override
-        protected String call() throws InterruptedException{
-                for (i = 0; i < timerDuration; i += 1000) {
+        protected String call() {
+            for (TimerModel.setRemainingTime(0); TimerModel.getRemainingTime() < timerDuration; TimerModel.setRemainingTime(TimerModel.getRemainingTime() + 1000)) {
+                try {
                     Thread.sleep(1000);//Update every second
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            timeLabel.setText(TimeUtilities.getStringTime(timerDuration - i));
+                            TimerModel.setTimeLabel(TimeUtilities.toString(timerDuration - TimerModel.getRemainingTime()));
                             double progress;
                             if (isPomodoro) {
-                                progress = 0.1 + 0.9 * ((double) i / (double) timerDuration);
-                            }else{
-                                progress = 0.1 + 0.9 * ((double) (timerDuration - i) / (double) timerDuration);
+                                progress = 0.1 + 0.9 * ((double) TimerModel.getRemainingTime() / (double) timerDuration);
+                            } else {
+                                progress = 0.1 + 0.9 * ((double) (timerDuration - TimerModel.getRemainingTime()) / (double) timerDuration);
                             }
-                            timerBar.setProgress(progress);
+                            TimerModel.setTimerBar(progress);
                         }
                     });
+                } catch (InterruptedException ex) {
+                    break;
                 }
+            }
             return "";
         }
     };
 
-    public TimerService(long timerDuration, boolean  isPomodoro, ProgressIndicator timerBar, Label timeLabel, EventHandler timerEventHandler) {
+    public TimerService(long timerDuration, EventHandler timerEventHandler) {
         this.timerDuration = timerDuration;
-        this.timerBar = timerBar;
-        this.timeLabel = timeLabel;
-        this.isPomodoro = isPomodoro;
+        //this.timeLabel = MainWindowController.timeLabel;
+        this.isPomodoro = TimerModel.getPomodoroCount() > TimerModel.getBreakCount();
         this.setOnSucceeded(timerEventHandler);
-        this.timeLabel.setText("00:00");
-        if(isPomodoro){
-            this.timerBar.setProgress(0.1);
-        }
     }
 
     @Override

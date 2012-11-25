@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.view;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimeUtilities {
 
-    public static String getStringTime(long milliseconds) {
+    public static String toString(long milliseconds) {
         return String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(milliseconds),
                 TimeUnit.MILLISECONDS.toSeconds(milliseconds)

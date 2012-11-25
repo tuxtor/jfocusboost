@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,6 +30,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import org.shekalug.model.TimeSettings;
+import org.shekalug.model.TimerModel;
+import org.shekalug.view.ButtonsBox;
 
 /**
  *
@@ -38,75 +41,63 @@ import javafx.stage.Stage;
 public class MainWindowController implements Initializable {
 
     //Basic control flags and properties
-    private int pomodoroCount;
-    private int breakCount;
-    private int timerBarStatus; //0-Inactive, 1-Paused, 2-Restarting
     private AudioClip alarmClip;
     private AudioClip tickingClip;
     @FXML //  fx:id="sessionLabel"
-    private Label sessionLabel; // Value injected by FXMLLoader
+    private static Label sessionLabel; // Value injected by FXMLLoader
     @FXML //  fx:id="timeLabel"
-    private Label timeLabel; // Value injected by FXMLLoader
+    private static Label timeLabel; // Value injected by FXMLLoader
     @FXML //  fx:id="timerBar"
-    private ProgressIndicator timerBar; // Value injected by FXMLLoader
+    private static ProgressIndicator timerBar; // Value injected by FXMLLoader
     @FXML
     private Pane clockPane;
     @FXML
     private AnchorPane anchorPane;
     @FXML //  fx:id="controlBox"
     private VBox controlBox;
+    public static Stage containerStage;
     //Gui dragging properties
     private double mouseDragOffsetX = 0;
     private double mouseDragOffsetY = 0;
-    public static Stage containerStage;
-    private TimerService timerService;
-    private EventHandler<WorkerStateEvent> timerEventHandler = new EventHandler<WorkerStateEvent>() {
-        @Override
-        public void handle(WorkerStateEvent t) {
-            alarmClip.play();
-            containerStage.setIconified(false);
-            initializePomoBar();
-        }
-    };
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializePaneDraging();
-
-        alarmClip = new AudioClip(MainWindowController.class.getResource("sounds/clockalarm.wav").toString());
-        tickingClip = new AudioClip(MainWindowController.class.getResource("sounds/clockticking.wav").toString());
-
-        initializePomoBar();
-        controlBox = new ButtonsBox(this.containerStage);
+        alarmClip = new AudioClip(MainWindowController.class.getResource("/org/shekalug/view/sounds/clockalarm.wav").toString());
+        tickingClip = new AudioClip(MainWindowController.class.getResource("/org/shekalug/view/sounds/clockticking.wav").toString());
+        controlBox = new ButtonsBox(containerStage);
         anchorPane.getChildren().add(controlBox);
         anchorPane.setTopAnchor(controlBox, 5.0);
         anchorPane.setRightAnchor(controlBox, 0.0);
+        timeLabel.textProperty().bind(TimerModel.getTimeLabel().textProperty());
+        timerBar.progressProperty().bind(TimerModel.getTimerBar().progressProperty());
+        sessionLabel.textProperty().bind(TimerModel.getSessionLabel().textProperty());
+        timerBar.idProperty().bind(TimerModel.getTimerBar().idProperty());
     }
 
     // Handler for ProgressBar[fx:id="timerBar"] onMouseClicked
     public void barClickHandle(MouseEvent event) {
-        switch (timerBarStatus) {
+        switch (TimerModel.getTimerBarStatus()) {
             case 0:
-                tickingClip.play();
-                timerService.start();
-                if (pomodoroCount > breakCount) {
-                    sessionLabel.setText("Pomodoro " + pomodoroCount);
+                getTimerService().start();
+                if (TimerModel.getPomodoroCount() > TimerModel.getBreakCount()) {
+                    TimerModel.getSessionLabel().setText("Pomodoro " + TimerModel.getPomodoroCount());
                 } else {
-                    sessionLabel.setText("Break " + breakCount);
+                    TimerModel.getSessionLabel().setText("Break " + TimerModel.getBreakCount());
                 }
-                timerBarStatus = 1;
-                timerBar.setId("timerBarStop");
+                TimerModel.setTimerBarStatus(1);
+                TimerModel.getTimerBar().setId("timerBarStop");
                 break;
             case 1:
-                timerService.cancel();
-                timerBarStatus = 2;
-                timerBar.setId("timerBarBack");
+                getTimerService().cancel();
+                TimerModel.setTimerBarStatus(2);
+                TimerModel.getTimerBar().setId("timerBarBack");
                 break;
             case 2://force break jump
-                if (pomodoroCount > breakCount) {
-                    breakCount++;
+                if (TimerModel.getPomodoroCount() > TimerModel.getBreakCount()) {
+                    TimerModel.setBreakCount(TimerModel.getBreakCount() + 1);
                 }
-                initializePomoBar();
+                initializeClock();
                 break;
             default:
                 //do nothing
@@ -120,13 +111,13 @@ public class MainWindowController implements Initializable {
      *
      * @return status duration in milliseconds
      */
-    public long getDuration() {
-        if (pomodoroCount == breakCount) {//Is pomodoro
-            pomodoroCount++;
+    public static long getDuration() {
+        if (TimerModel.getPomodoroCount() == TimerModel.getBreakCount()) {//Is pomodoro
+            TimerModel.setPomodoroCount(TimerModel.getPomodoroCount() + 1);
             return TimeSettings.getPomodoroDuration();
         } else {//Is break
-            breakCount++;
-            if (((breakCount) % 4) == 0) {//Long break
+            TimerModel.setBreakCount(TimerModel.getBreakCount() + 1);
+            if (((TimerModel.getBreakCount()) % 4) == 0) {//Long break
                 return TimeSettings.getLongBreakDuration();
             } else {//short break
                 return TimeSettings.getShortBreakDuration();
@@ -134,6 +125,9 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Sets draggin panel propierties, because the lack of borders
+     */
     public void initializePaneDraging() {
         EventHandler generalMousePressed = new EventHandler<MouseEvent>() {
             @Override
@@ -158,9 +152,32 @@ public class MainWindowController implements Initializable {
         clockPane.setOnMouseDragged(generalMouseDragged);
     }
 
-    public void initializePomoBar() {
-        timerBarStatus = 0;
-        timerBar.setId("timerBar");
-        timerService = new TimerService(getDuration(), pomodoroCount > breakCount, timerBar, timeLabel, timerEventHandler);
+    /**
+     * Restarts clock propierties
+     */
+    public void initializeClock() {
+        TimerModel.setTimerBarStatus(0);
+        TimerModel.getTimerBar().setId("timerBar");
+        TimerModel.setTimeLabel("00:00");
+        TimerModel.timerService = null;
+    }
+
+    /**
+     * Lazy timerService retrieving/generation
+     * @return TimerService unique instance
+     */
+    public TimerService getTimerService() {
+        if (TimerModel.timerService == null) {
+            EventHandler<WorkerStateEvent> timerEventHandler = new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent t) {
+                    alarmClip.play();
+                    containerStage.setIconified(false);
+                    initializeClock();
+                }
+            };
+            TimerModel.timerService = new TimerService(getDuration(), timerEventHandler);
+        }
+        return TimerModel.timerService;
     }
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" disable="false" mouseTransparent="false" opacity="1.0" prefHeight="100.0" prefWidth="258.0" snapToPixel="true" styleClass="background" visible="true" xmlns:fx="http://javafx.com/fxml" fx:controller="org.shekalug.MainWindowController">
+<AnchorPane fx:id="anchorPane" disable="false" mouseTransparent="false" opacity="1.0" prefHeight="100.0" prefWidth="258.0" snapToPixel="true" styleClass="background" visible="true" xmlns:fx="http://javafx.com/fxml" fx:controller="org.shekalug.controller.MainWindowController">
   <children>
     <Pane id="backPane" fx:id="clockPane" prefHeight="71.0" prefWidth="122.0" styleClass="glass-panel" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0">
       <children>
@@ -36,7 +36,7 @@
       </effect>
     </Pane>
     <VBox fx:id="controlBox" prefHeight="100.0" prefWidth="18.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0" />
-    <ProgressIndicator fx:id="timerBar" layoutX="136.0" layoutY="15.0" onMouseClicked="#barClickHandle" prefHeight="70.0" prefWidth="104.0" progress="0.0" styleClass="progress-bar" />
+    <ProgressIndicator fx:id="timerBar" layoutX="136.0" layoutY="15.0" onMouseClicked="#barClickHandle" prefHeight="70.0" prefWidth="104.0" progress="0.0" />
   </children>
   <stylesheets>
     <URL value="@JFocusStyle.css" />

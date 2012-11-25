@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.model;
 
 /**
  *
@@ -24,7 +24,8 @@ public class TimeSettings {
     private static long pomodoroDuration=25*60*1000;
     private static long shortBreakDuration=5*60*1000;
     private static long longBreakDuration=15*60*1000;
-
+    private static double prevXPosition=0;
+    private static double prevYPosition=0;
     public static long getPomodoroDuration() {
         return pomodoroDuration;
     }
@@ -47,5 +48,21 @@ public class TimeSettings {
 
     public static void setLongBreakDuration(long aLongBreakDuration) {
         longBreakDuration = aLongBreakDuration;
+    }
+
+    public static double getPrevXPosition() {
+        return prevXPosition;
+    }
+
+    public static void setPrevXPosition(double aPrevXPosition) {
+        prevXPosition = aPrevXPosition;
+    }
+
+    public static double getPrevYPosition() {
+        return prevYPosition;
+    }
+
+    public static void setPrevYPosition(double aPrevYPosition) {
+        prevYPosition = aPrevYPosition;
     }
 }

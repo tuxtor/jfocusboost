@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shekalug;
+package org.shekalug.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,6 +28,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.shekalug.model.TimeSettings;
+import org.shekalug.view.JFocusBoost;
 
 public class SettingsController implements Initializable {
 
@@ -54,18 +56,21 @@ public class SettingsController implements Initializable {
     private long longBreakDuration;
     public static Stage containerStage;
     private ChangeListener pomoSliderChangeListener = new ChangeListener<Number>() {
+        @Override
         public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
             pomodoroDuration = new_val.longValue() * 60 * 1000;
         }
     };
     private ChangeListener shortBreakSliderChangeListener = new ChangeListener<Number>() {
+        @Override
         public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
             shortBreakDuration = new_val.longValue() * 60 * 1000;
         }
     };
     private ChangeListener longBreakSliderChangeListener = new ChangeListener<Number>() {
+        @Override
         public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
             longBreakDuration = new_val.longValue() * 60 * 1000;
@@ -76,16 +81,20 @@ public class SettingsController implements Initializable {
         TimeSettings.setPomodoroDuration(this.pomodoroDuration);
         TimeSettings.setShortBreakDuration(this.shortBreakDuration);
         TimeSettings.setLongBreakDuration(this.longBreakDuration);
-        containerStage.setScene(JFocusBoost.pomodoroSmallScene);
+        goBack();
     }
 
     public void cancelClickHandle(MouseEvent event) {
-        containerStage.setScene(JFocusBoost.pomodoroSmallScene);
+        goBack();
     }
 
+    private void goBack(){
+        containerStage.setScene(JFocusBoost.getActualTimerScene());
+        containerStage.setX(TimeSettings.getPrevXPosition());
+        containerStage.setY(TimeSettings.getPrevYPosition());
+    }
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        // initialize your logic here: all @FXML variables will have been injected
         this.pomoLabel.textProperty().bind(pomoSlider.valueProperty().asString());
         this.longBreakLabel.textProperty().bind(longBreakSlider.valueProperty().asString());
         this.shortBreakLabel.textProperty().bind(shortBreakSlider.valueProperty().asString());
