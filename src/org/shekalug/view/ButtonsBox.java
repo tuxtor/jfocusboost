@@ -19,12 +19,12 @@ package org.shekalug.view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
-import org.shekalug.model.TimeSettings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.shekalug.model.TimeSettings;
 
 public class ButtonsBox extends VBox {
 

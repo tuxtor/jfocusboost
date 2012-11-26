@@ -9,6 +9,7 @@
             <author name="Víctor Orozco" email="tuxtor@shekalug.org"/>
         </authors>
         <url>http://tuxtor.github.com/jfocusboost</url>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
     </info>
     <locale>
         <langpack iso3="eng"/>
@@ -25,8 +26,9 @@
     </guiprefs>
     <resources>
         <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+        <res src="Unix_shortcutSpec.xml" id="Unix_shortcutSpec.xml"/>
+        <!--res id="TargetPanel.dir.windows" src="targetwin.txt"/-->
     </resources>
- 
     <panels>
         <panel classname="TargetPanel"/>
         <panel classname="InstallPanel"/>
@@ -37,11 +39,12 @@
     <packs>
         <pack name="Base" required="yes">
             <description>The core files needed for the application</description>
-            <file src="dist/JFocusBoost.jar" targetdir="$INSTALL_PATH"/>
+            <file src="dist/JFocusBoost.jar" trgetdir="$INSTALL_PATH"/>
             <file src="src/org/shekalug/view/images/logo.png" targetdir="$INSTALL_PATH"/>
             <file src="start.sh" targetdir="$INSTALL_PATH"/>
             <parsable targetfile="$INSTALL_PATH/start.sh"/>
             <executable targetfile="$INSTALL_PATH/start.sh" stage="never" failure="warn" keep="true"/> 
         </pack>
     </packs>
+    <native type="izpack" name="ShellLink.dll"/>
 </installation>

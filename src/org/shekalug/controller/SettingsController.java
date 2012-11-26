@@ -22,8 +22,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.shekalug.model.TimeSettings;
 import org.shekalug.view.ButtonsBox;
@@ -56,36 +57,13 @@ public class SettingsController implements Initializable {
     private Label shortBreakLabel; // Value injected by FXMLLoader
     @FXML //  fx:id="shortBreakSlider"
     private Slider shortBreakSlider; // Value injected by FXMLLoader
-    private long pomodoroDuration;
-    private long shortBreakDuration;
-    private long longBreakDuration;
     public static Stage containerStage;
-    private ChangeListener pomoSliderChangeListener = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            pomodoroDuration = new_val.longValue() * 60 * 1000;
-        }
-    };
-    private ChangeListener shortBreakSliderChangeListener = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            shortBreakDuration = new_val.longValue() * 60 * 1000;
-        }
-    };
-    private ChangeListener longBreakSliderChangeListener = new ChangeListener<Number>() {
-        @Override
-        public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            longBreakDuration = new_val.longValue() * 60 * 1000;
-        }
-    };
-
+    private double mouseDragOffsetX = 0;
+    private double mouseDragOffsetY = 0;
     public void okClickHandle(MouseEvent event) {
-        TimeSettings.setPomodoroDuration(this.pomodoroDuration);
-        TimeSettings.setShortBreakDuration(this.shortBreakDuration);
-        TimeSettings.setLongBreakDuration(this.longBreakDuration);
+        TimeSettings.setPomodoroDuration((long) pomoSlider.getValue() * 60 * 1000);
+        TimeSettings.setShortBreakDuration((long) shortBreakSlider.getValue() * 60 * 1000);
+        TimeSettings.setLongBreakDuration((long) longBreakSlider.getValue() * 60 * 1000);
         try {
             TimeSettings.getPrefs().flush();
         } catch (BackingStoreException ex) {
@@ -102,29 +80,48 @@ public class SettingsController implements Initializable {
         containerStage.setScene(JFocusBoost.getActualTimerScene());
         containerStage.setX(TimeSettings.getPrevXPosition());
         containerStage.setY(TimeSettings.getPrevYPosition());
+        updateSliderValues();//Refresh after scene switching
     }
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         //Actual time values
-        this.pomodoroDuration = TimeSettings.getPomodoroDuration()/60/1000;
-        this.shortBreakDuration = TimeSettings.getShortBreakDuration()/60/1000;
-        this.longBreakDuration = TimeSettings.getLongBreakDuration()/60/1000;
-        
-        this.pomoSlider.setValue(pomodoroDuration);
-        this.shortBreakSlider.setValue(shortBreakDuration);
-        this.longBreakSlider.setValue(longBreakDuration);
-        
-        this.pomoLabel.textProperty().bindBidirectional(pomoSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
-        this.longBreakLabel.textProperty().bindBidirectional(longBreakSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
-        this.shortBreakLabel.textProperty().bindBidirectional(shortBreakSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
+        updateSliderValues();
+        initializePaneDraging();
+        this.pomoLabel.textProperty().bindBidirectional(pomoSlider.valueProperty(), new DecimalFormat("#,###,###,##0"));
+        this.longBreakLabel.textProperty().bindBidirectional(longBreakSlider.valueProperty(), new DecimalFormat("#,###,###,##0"));
+        this.shortBreakLabel.textProperty().bindBidirectional(shortBreakSlider.valueProperty(), new DecimalFormat("#,###,###,##0"));
+    }
 
+    private void updateSliderValues() {
+        this.pomoSlider.setValue(TimeSettings.getPomodoroDuration() / 60 / 1000);
+        this.shortBreakSlider.setValue(TimeSettings.getShortBreakDuration() / 60 / 1000);
+        this.longBreakSlider.setValue(TimeSettings.getLongBreakDuration() / 60 / 1000);
+    }
+    
+        /**
+     * Sets panel draging properties because of the lack of borders
+     */
+    public void initializePaneDraging() {
+        EventHandler generalMousePressed = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseDragOffsetX = event.getSceneX();
+                mouseDragOffsetY = event.getSceneY();
+            }
+        };
 
-        //Listener binding
-        this.pomoSlider.valueProperty().addListener(this.pomoSliderChangeListener);
+        EventHandler generalMouseDragged = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                containerStage.setX(event.getScreenX() - mouseDragOffsetX);
+                containerStage.setY(event.getScreenY() - mouseDragOffsetY);
+
+            }
+        };
+        anchorPane.setOnMousePressed(generalMousePressed);
+        anchorPane.setOnMouseDragged(generalMouseDragged);
         
-        this.shortBreakSlider.valueProperty().addListener(this.shortBreakSliderChangeListener);
-        
-        this.longBreakSlider.valueProperty().addListener(this.longBreakSliderChangeListener);
     }
 }

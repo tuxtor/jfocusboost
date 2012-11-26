@@ -37,6 +37,7 @@ public class TimeSettings {
     
     public static long getPomodoroDuration() {
         return getPrefs().getLong(POMO_DURATION_KEY, 25*60*1000);
+        //return 1*15*1000;
     }
 
     public static void setPomodoroDuration(long aPomodoroDuration) {
@@ -45,6 +46,7 @@ public class TimeSettings {
 
     public static long getShortBreakDuration() {
         return getPrefs().getLong(SB_DURATION_KEY, 5*60*1000);
+        //return 1*5*1000;
     }
 
     public static void setShortBreakDuration(long aShortBreakDuration) {
@@ -53,6 +55,7 @@ public class TimeSettings {
 
     public static long getLongBreakDuration() {
         return getPrefs().getLong(LB_DURATION_KEY, 15*60*1000);
+        //return 1*10*1000;
     }
 
     public static void setLongBreakDuration(long aLongBreakDuration) {
