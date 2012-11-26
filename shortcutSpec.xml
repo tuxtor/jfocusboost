@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 
 <shortcuts>
+    <skipIfNotSupported/>
     <programGroup defaultName="JFocusBoost" location="applications"/>
+
     <shortcut
         name="JFocusBoost"
+        workingDirectory= "$INSTALL_PATH"
         programGroup="yes"
         desktop="yes"
         applications="yes"
-        startMenu="yes"
-        target="$INSTALL_PATH\JFocusBoost.jar"
+        target="$INSTALL_PATH\start.sh"
+        type="Application"
+        encoding="UTF-8"
+        categories="Application;System;"
+        iconFile="$INSTALL_PATH\logo.png"
         description="JFocusBoot App">
     </shortcut>
  
