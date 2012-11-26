@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<installation version="1.0">
+    <info>
+        <appname>JFocusBoost</appname>
+        <appversion>0.0.1</appversion>
+        <appsubpath>JFocusBoost</appsubpath>
+        <javaversion>1.7</javaversion>
+        <authors>
+            <author name="Víctor Orozco" email="tuxtor@shekalug.org"/>
+        </authors>
+        <url>http://tuxtor.github.com/jfocusboost</url>
+    </info>
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="spa"/>
+        <langpack iso3="por"/>
+    </locale>
+ 
+    <guiprefs width="800" height="600" resizable="no">
+        <!--laf name="nimbus">
+            <os family="windows" />
+            <os family="unix" />
+            <os family="mac" />
+        </laf-->
+    </guiprefs>
+    <resources>
+        <res src="shortcutSpec.xml" id="shortcutSpec.xml"/>
+    </resources>
+ 
+    <panels>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+ 
+    <packs>
+        <pack name="Base" required="yes">
+            <description>The core files needed for the application</description>
+            <file src="dist/JFocusBoost.jar" targetdir="$INSTALL_PATH"/>
+            <file src="src/org/shekalug/view/images/logo.png" targetdir="$INSTALL_PATH"/>
+            <file src="start.sh" targetdir="$INSTALL_PATH"/>
+            <parsable targetfile="$INSTALL_PATH/start.sh"/>
+            <executable targetfile="$INSTALL_PATH/start.sh" stage="never" failure="warn" keep="true"/> 
+        </pack>
+    </packs>
+</installation>

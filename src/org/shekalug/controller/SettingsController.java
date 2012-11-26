@@ -17,6 +17,7 @@
 package org.shekalug.controller;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,18 +106,25 @@ public class SettingsController implements Initializable {
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        this.pomoLabel.textProperty().bind(pomoSlider.valueProperty().asString());
-        this.longBreakLabel.textProperty().bind(longBreakSlider.valueProperty().asString());
-        this.shortBreakLabel.textProperty().bind(shortBreakSlider.valueProperty().asString());
+        //Actual time values
+        this.pomodoroDuration = TimeSettings.getPomodoroDuration()/60/1000;
+        this.shortBreakDuration = TimeSettings.getShortBreakDuration()/60/1000;
+        this.longBreakDuration = TimeSettings.getLongBreakDuration()/60/1000;
+        
+        this.pomoSlider.setValue(pomodoroDuration);
+        this.shortBreakSlider.setValue(shortBreakDuration);
+        this.longBreakSlider.setValue(longBreakDuration);
+        
+        this.pomoLabel.textProperty().bindBidirectional(pomoSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
+        this.longBreakLabel.textProperty().bindBidirectional(longBreakSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
+        this.shortBreakLabel.textProperty().bindBidirectional(shortBreakSlider.valueProperty(), new DecimalFormat( "#,###,###,##0" ));
 
-        //Actual duration values
-        this.pomodoroDuration = TimeSettings.getPomodoroDuration();
-        this.shortBreakDuration = TimeSettings.getShortBreakDuration();
-        this.longBreakDuration = TimeSettings.getLongBreakDuration();
 
-        //Listener confi
+        //Listener binding
         this.pomoSlider.valueProperty().addListener(this.pomoSliderChangeListener);
+        
         this.shortBreakSlider.valueProperty().addListener(this.shortBreakSliderChangeListener);
+        
         this.longBreakSlider.valueProperty().addListener(this.longBreakSliderChangeListener);
     }
 }

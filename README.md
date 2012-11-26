@@ -14,8 +14,7 @@ Requirements
 * JVM SE 7
 * or JVM SE 6 with JavaFx installed
 
-It has been tested also in OpenJDK with no significant bugs.
-
+At this time it does not work with OpenJDK, but OpenJDK support and JavaFX open sourcing it's planned, so await if you want to avoid the Java Trap
 Credits
 =======
 JFocustBoost source code is under [GPLv3 License](http://www.gnu.org/licenses/gpl-3.0.html) 
