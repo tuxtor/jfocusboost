@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import org.shekalug.controller.TimerService;
+import org.shekalug.controller.TimerStatus;
 
 /**
  *
@@ -29,11 +30,11 @@ public class TimerModel {
 
     private static int pomodoroCount;
     private static int breakCount;
-    private static int remainingTime; //0-Inactive, 1-Paused, 2-Restarting
-    private static int timerBarStatus; //0-Inactive, 1-Paused, 2-Restarting
+    private static int remainingTime;
+    private static TimerStatus timerBarStatus=TimerStatus.READY;
     //GUI model variables
     private static Label timeLabel = new Label("00:00");
-    private static ProgressIndicator timerBar = new ProgressBar(0.1);
+    private static ProgressIndicator timerBar = new ProgressBar(0);
     private static Label sessionLabel = new Label("--");
     public static TimerService timerService;
 
@@ -59,14 +60,6 @@ public class TimerModel {
 
     public static void setRemainingTime(int aRemainingTime) {
         remainingTime = aRemainingTime;
-    }
-
-    public static int getTimerBarStatus() {
-        return timerBarStatus;
-    }
-
-    public static void setTimerBarStatus(int aTimerBarStatus) {
-        timerBarStatus = aTimerBarStatus;
     }
 
     public static Label getTimeLabel() {
@@ -103,5 +96,13 @@ public class TimerModel {
 
     public static void setSessionLabel(Label aSessionLabel) {
         sessionLabel = aSessionLabel;
+    }
+
+    public static TimerStatus getTimerBarStatus() {
+        return timerBarStatus;
+    }
+
+    public static void setTimerBarStatus(TimerStatus aTimerBarStatus) {
+        timerBarStatus = aTimerBarStatus;
     }
 }

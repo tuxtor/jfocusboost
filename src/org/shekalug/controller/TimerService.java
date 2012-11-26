@@ -21,6 +21,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import org.shekalug.model.TimerModel;
+import org.shekalug.view.JFocusBoost;
 import org.shekalug.view.TimeUtilities;
 
 /**
@@ -42,10 +43,19 @@ public class TimerService extends Service<String> {
                         public void run() {
                             TimerModel.setTimeLabel(TimeUtilities.toString(timerDuration - TimerModel.getRemainingTime()));
                             double progress;
-                            if (isPomodoro) {
-                                progress = 0.1 + 0.9 * ((double) TimerModel.getRemainingTime() / (double) timerDuration);
-                            } else {
-                                progress = 0.1 + 0.9 * ((double) (timerDuration - TimerModel.getRemainingTime()) / (double) timerDuration);
+                            double guiFixFactor = 0;
+                            if (JFocusBoost.smallVersion) {
+                                if (isPomodoro) {
+                                    progress = 0.1 + 0.9 * ((double) TimerModel.getRemainingTime() / (double) timerDuration);
+                                } else {
+                                    progress = 0.1 + 0.9 * ((double) (timerDuration - TimerModel.getRemainingTime()) / (double) timerDuration);
+                                }
+                            }else{
+                                if (isPomodoro) {
+                                    progress = 1 * ((double) TimerModel.getRemainingTime() / (double) timerDuration);
+                                } else {
+                                    progress = 1 * ((double) (timerDuration - TimerModel.getRemainingTime()) / (double) timerDuration);
+                                }
                             }
                             TimerModel.setTimerBar(progress);
                         }
@@ -60,7 +70,6 @@ public class TimerService extends Service<String> {
 
     public TimerService(long timerDuration, EventHandler timerEventHandler) {
         this.timerDuration = timerDuration;
-        //this.timeLabel = MainWindowController.timeLabel;
         this.isPomodoro = TimerModel.getPomodoroCount() > TimerModel.getBreakCount();
         this.setOnSucceeded(timerEventHandler);
     }

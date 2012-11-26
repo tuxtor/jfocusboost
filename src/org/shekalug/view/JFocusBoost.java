@@ -25,10 +25,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.shekalug.controller.MainWindowController;
 import org.shekalug.controller.SettingsController;
+import org.shekalug.model.TimerModel;
 
 /**
  *
@@ -64,15 +66,19 @@ public class JFocusBoost extends Application {
 
     public static Scene switchTimerScene() {
         Parent pomodoroRoot;
-        Scene scene = null;
+        Scene scene = null; 
         try {
             if (smallVersion) {
                 pomodoroRoot = FXMLLoader.load(JFocusBoost.class.getResource("MainWindowCompact.fxml"));
                 pomodoroSmallScene = new Scene(pomodoroRoot);
+                pomodoroSmallScene.setFill(Color.TRANSPARENT);
+                TimerModel.getTimerBar().setProgress(TimerModel.getTimerBar().getProgress()-0.1);
                 scene = pomodoroSmallScene;
             } else {
                 pomodoroRoot = FXMLLoader.load(JFocusBoost.class.getResource("MainWindow.fxml"));
                 pomodoroLargeScene = new Scene(pomodoroRoot);
+                pomodoroLargeScene.setFill(Color.TRANSPARENT);
+                TimerModel.getTimerBar().setProgress(TimerModel.getTimerBar().getProgress()+0.1);
                 scene = pomodoroLargeScene;
             }
             smallVersion = !smallVersion;

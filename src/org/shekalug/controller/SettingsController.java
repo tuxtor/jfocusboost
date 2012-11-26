@@ -18,6 +18,9 @@ package org.shekalug.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -29,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.shekalug.model.TimeSettings;
+import org.shekalug.view.ButtonsBox;
 import org.shekalug.view.JFocusBoost;
 
 public class SettingsController implements Initializable {
@@ -81,6 +85,11 @@ public class SettingsController implements Initializable {
         TimeSettings.setPomodoroDuration(this.pomodoroDuration);
         TimeSettings.setShortBreakDuration(this.shortBreakDuration);
         TimeSettings.setLongBreakDuration(this.longBreakDuration);
+        try {
+            TimeSettings.getPrefs().flush();
+        } catch (BackingStoreException ex) {
+            Logger.getLogger(ButtonsBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
         goBack();
     }
 
@@ -88,11 +97,12 @@ public class SettingsController implements Initializable {
         goBack();
     }
 
-    private void goBack(){
+    private void goBack() {
         containerStage.setScene(JFocusBoost.getActualTimerScene());
         containerStage.setX(TimeSettings.getPrevXPosition());
         containerStage.setY(TimeSettings.getPrevYPosition());
     }
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         this.pomoLabel.textProperty().bind(pomoSlider.valueProperty().asString());

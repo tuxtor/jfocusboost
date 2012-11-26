@@ -16,38 +16,47 @@
  */
 package org.shekalug.model;
 
+import java.util.prefs.Preferences;
+import org.shekalug.controller.MainWindowController;
+
 /**
  *
  * @author tuxtor
  */
 public class TimeSettings {
-    private static long pomodoroDuration=25*60*1000;
-    private static long shortBreakDuration=5*60*1000;
-    private static long longBreakDuration=15*60*1000;
+    private static final String POMO_DURATION_KEY="pomodoroDuration";
+    private static final String SB_DURATION_KEY="shortBreakDuration";
+    private static final String LB_DURATION_KEY="longBreakDuration";
+//    private static final String PREV_X_KEY="prevXPosition";
+//    private static final String PREV_Y_KEY="prevYPosition";
+
     private static double prevXPosition=0;
     private static double prevYPosition=0;
+    private static Preferences prefs= Preferences.userNodeForPackage(MainWindowController.class);
+   
+    
     public static long getPomodoroDuration() {
-        return pomodoroDuration;
+        return getPrefs().getLong(POMO_DURATION_KEY, 25*60*1000);
     }
 
     public static void setPomodoroDuration(long aPomodoroDuration) {
-        pomodoroDuration = aPomodoroDuration;
+        getPrefs().putLong(POMO_DURATION_KEY, aPomodoroDuration);
     }
 
     public static long getShortBreakDuration() {
-        return shortBreakDuration;
+        return getPrefs().getLong(SB_DURATION_KEY, 5*60*1000);
     }
 
     public static void setShortBreakDuration(long aShortBreakDuration) {
-        shortBreakDuration = aShortBreakDuration;
+        getPrefs().putLong(SB_DURATION_KEY, aShortBreakDuration);
     }
 
     public static long getLongBreakDuration() {
-        return longBreakDuration;
+        return getPrefs().getLong(LB_DURATION_KEY, 15*60*1000);
     }
 
     public static void setLongBreakDuration(long aLongBreakDuration) {
-        longBreakDuration = aLongBreakDuration;
+        getPrefs().putLong(LB_DURATION_KEY, aLongBreakDuration);
     }
 
     public static double getPrevXPosition() {
@@ -64,5 +73,9 @@ public class TimeSettings {
 
     public static void setPrevYPosition(double aPrevYPosition) {
         prevYPosition = aPrevYPosition;
+    }
+
+    public static Preferences getPrefs() {
+        return prefs;
     }
 }

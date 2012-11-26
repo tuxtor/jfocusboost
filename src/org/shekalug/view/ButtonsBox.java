@@ -16,6 +16,9 @@
  */
 package org.shekalug.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import org.shekalug.model.TimeSettings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,6 +39,11 @@ public class ButtonsBox extends VBox {
         closeBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try {
+                    TimeSettings.getPrefs().flush();
+                } catch (BackingStoreException ex) {
+                    Logger.getLogger(ButtonsBox.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 System.exit(0);
             }
         });
