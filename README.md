@@ -2,6 +2,7 @@ JFocusBoost
 ===========
 ![Small clock](https://raw.github.com/tuxtor/jfocusboost/master/clocksmall.png)
 ![Large clock](https://raw.github.com/tuxtor/jfocusboost/master/clocklarge.png)
+
 JFocusBoost is a JavaFX implementation of a simple pomodoro timer.
 
 At this moment it's in an early development stage but some functionality is ready, including:
